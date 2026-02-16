@@ -1,0 +1,22 @@
+name: Tests
+
+on:
+  push:
+    branches: [ main, develop ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  tests:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+
+    - name: Build container
+      run: docker-compose build
+
+    - name: Run BDD tests
+      run: docker-compose run test
+
+    - name: Run validation
+      run: docker-compose run validation

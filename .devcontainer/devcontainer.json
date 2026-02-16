@@ -1,0 +1,37 @@
+{
+  "name": "Hydrophone Deconvolution Multi-Lang",
+  "dockerComposeFile": "../docker-compose.yml",
+  "service": "dev",
+  "workspaceFolder": "/workspace",
+  
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.vscode-pylance",
+        "ms-python.black-formatter",
+        "ms-vscode.cpptools",
+        "ms-vscode.cmake-tools",
+        "ms-dotnettools.csharp",
+        "rust-lang.rust-analyzer"
+      ],
+      "settings": {
+        "terminal.integrated.defaultProfile.linux": "bash",
+        "python.testing.pytestEnabled": true,
+        "python.testing.unittestEnabled": false,
+        "[python]": {
+          "editor.formatOnSave": true,
+          "editor.defaultFormatter": "ms-python.black-formatter"
+        },
+        "C_Cpp.default.compilerPath": "/usr/bin/g++",
+        "rust-analyzer.checkOnSave.command": "clippy"
+      }
+    }
+  },
+  
+  "forwardPorts": [],
+  
+  "postCreateCommand": "echo 'Dev Container ready! Run: claude code'",
+  
+  "remoteUser": "root"
+}

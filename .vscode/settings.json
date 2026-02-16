@@ -1,0 +1,17 @@
+{
+  "terminal.integrated.defaultProfile.linux": "bash",
+  "python.testing.pytestEnabled": true,
+  "python.testing.unittestEnabled": false,
+  "python.linting.enabled": true,
+  "[python]": {
+    "editor.formatOnSave": true,
+    "editor.defaultFormatter": "ms-python.black-formatter"
+  },
+  "C_Cpp.default.compilerPath": "/usr/bin/g++",
+  "rust-analyzer.checkOnSave.command": "clippy",
+  "files.watcherExclude": {
+    "**/target/**": true,
+    "**/build/**": true,
+    "**/.venv/**": true
+  }
+}

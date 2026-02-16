@@ -1,0 +1,24 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "BDD: Run All Features",
+      "type": "shell",
+      "command": "behave",
+      "args": ["features/", "--format", "pretty"],
+      "group": {"kind": "test", "isDefault": true}
+    },
+    {
+      "label": "Python: Run Tests",
+      "type": "shell",
+      "command": "bash",
+      "args": ["-c", "cd python && pytest tests/ -v"]
+    },
+    {
+      "label": "Validation: Cross-Check All Languages",
+      "type": "shell",
+      "command": "python3",
+      "args": ["validation/compare_results.py"]
+    }
+  ]
+}

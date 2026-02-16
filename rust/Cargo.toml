@@ -1,0 +1,11 @@
+[package]
+name = "hydrophone-deconvolution"
+version = "0.1.0"
+edition = "2021"
+license = "CC-BY-4.0"
+
+[dependencies]
+rustfft = "6.1"
+num-complex = "0.4"
+rand = "0.8"
+rand_distr = "0.4"

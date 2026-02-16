@@ -1,0 +1,67 @@
+version: '3.8'
+
+services:
+  dev:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes:
+      - .:/workspace:cached
+      - /var/run/docker.sock:/var/run/docker.sock
+    working_dir: /workspace
+    stdin_open: true
+    tty: true
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: sleep infinity
+
+  test:
+    build: .
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: behave features/ --format pretty
+
+  python-test:
+    build: .
+    volumes:
+      - ./python:/app
+      - ./test-data:/test-data
+    working_dir: /app
+    command: bash -c "pip install --break-system-packages -e . && pytest tests/ -v"
+
+  octave-test:
+    build: .
+    volumes:
+      - ./octave:/app
+      - ./test-data:/test-data
+    working_dir: /app
+    command: octave tests/test_deconvolution.m
+
+  cpp-test:
+    build: .
+    volumes:
+      - ./cpp:/app
+    working_dir: /app
+    command: bash -c "mkdir -p build && cd build && cmake .. && make && ./test_deconvolution"
+
+  csharp-test:
+    build: .
+    volumes:
+      - ./csharp:/app
+    working_dir: /app
+    command: bash -c "dotnet build && dotnet test"
+
+  rust-test:
+    build: .
+    volumes:
+      - ./rust:/app
+    working_dir: /app
+    command: cargo test --release
+
+  validation:
+    build: .
+    volumes:
+      - .:/workspace
+    working_dir: /workspace
+    command: python3 validation/compare_results.py

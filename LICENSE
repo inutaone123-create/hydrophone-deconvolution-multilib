@@ -1,0 +1,35 @@
+Creative Commons Attribution 4.0 International (CC BY 4.0)
+
+Full license: https://creativecommons.org/licenses/by/4.0/legalcode
+
+You are free to:
+- Share: copy and redistribute the material
+- Adapt: remix, transform, and build upon the material
+for any purpose, even commercially.
+
+Under the following terms:
+- Attribution: You must give appropriate credit, provide a link to the
+  license, and indicate if changes were made.
+
+---
+
+ATTRIBUTION
+
+This work is based on:
+"Tutorial-Deconvolution" by Martin Weber and Volker Wilkens (2023)
+DOI: 10.5281/zenodo.10079801
+Original License: CC BY 4.0
+
+Original Authors:
+- Martin Weber (University of Helsinki, ORCID: 0000-0001-5919-5808)
+- Volker Wilkens (Physikalisch-Technische Bundesanstalt, ORCID: 0000-0002-7815-1330)
+
+Multi-language Implementation:
+- Inuta, 2024
+
+Changes from Original:
+1. Refactored Python tutorial into reusable library functions
+2. Implemented in Octave, C++, C#, and Rust
+3. Added PocketFFT alignment across all languages
+4. Developed BDD/spec-driven testing framework
+5. Created comprehensive cross-validation suite
