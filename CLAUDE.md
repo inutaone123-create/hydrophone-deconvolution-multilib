@@ -19,6 +19,19 @@
 6. `git push` でリモートにプッシュ
 7. リモート: https://github.com/inutaone123-create/hydrophone-deconvolution-multilib
 
+## 仕様変更・修正ワークフロー
+
+仕様変更や修正が発生した際は、以下の手順を繰り返し実行する：
+
+1. **変更内容の理解** — 変更依頼を確認し、影響範囲を特定
+2. **影響分析** — 変更が及ぶ言語・ファイルを洗い出す
+3. **実装** — 全対象言語に対して修正を適用（ライセンスヘッダー維持）
+4. **言語別テスト** — 各言語のテストを実行して全パスを確認
+5. **クロス検証** — テストデータ再生成 → 全言語のエクスポート再実行 → `compare_results.py` で10/10パス確認
+6. **BDDテスト** — `behave features/` を実行
+7. **ドキュメント更新** — 必要に応じて docs/, COMPLETION_REPORT, Qiita 記事を更新
+8. **コミット＆プッシュ** — 既存のコミット＆プッシュ手順に従う
+
 ## 環境ノート
 - `/workspace` は `git config --global --add safe.directory /workspace` が必要
 - Dev Container内で作業中
