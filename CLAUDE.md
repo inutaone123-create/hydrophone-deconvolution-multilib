@@ -10,6 +10,22 @@
 - 日本語でコミュニケーション
 - 一区切りついたらコミット＆プッシュまで行う
 
+## ブランチ戦略
+
+2層構成を採用する（develop 層は設けない）：
+
+```
+main
+  └── feature/xxx or fix/xxx  （作業ブランチ）
+        ↓ 実装・テスト・クロス検証を完了
+main ← マージ → push
+```
+
+1. main から作業ブランチを作成: `git checkout -b feature/xxx` or `git checkout -b fix/xxx`
+2. 作業ブランチ上で実装・テスト・クロス検証まで完了させる
+3. main にマージ: `git checkout main && git merge feature/xxx`
+4. push 後、不要になったブランチを削除: `git branch -d feature/xxx`
+
 ## コミット＆プッシュ手順
 1. `git status` で変更内容を確認
 2. `git diff` でステージ済み・未ステージの差分を確認
@@ -30,7 +46,7 @@
 5. **クロス検証** — テストデータ再生成 → 全言語のエクスポート再実行 → `compare_results.py` で10/10パス確認
 6. **BDDテスト** — `behave features/` を実行
 7. **ドキュメント更新** — 必要に応じて docs/, COMPLETION_REPORT, Qiita 記事を更新
-8. **コミット＆プッシュ** — 既存のコミット＆プッシュ手順に従う
+8. **コミット＆プッシュ** — 作業ブランチでコミット → main にマージ → push（ブランチ戦略・コミット＆プッシュ手順に従う）
 
 ## 環境ノート
 - `/workspace` は `git config --global --add safe.directory /workspace` が必要
