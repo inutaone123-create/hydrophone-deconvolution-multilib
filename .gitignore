@@ -28,6 +28,9 @@ obj/
 target/
 Cargo.lock
 
+# Claude Code
+.claude/
+
 # IDEs
 .vscode/.ropeproject
 .idea/
