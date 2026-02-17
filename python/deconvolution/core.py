@@ -11,7 +11,7 @@ https://creativecommons.org/licenses/by/4.0/
 """
 
 import numpy as np
-from typing import Tuple
+from typing import Dict, Tuple, Union
 
 
 def deconvolve_without_uncertainty(
@@ -58,3 +58,71 @@ def deconvolve_with_uncertainty(
     mean = np.mean(mc_results, axis=0)
     std = np.std(mc_results, axis=0)
     return mean, std
+
+
+def pulse_parameters(
+    time: np.ndarray,
+    pressure: np.ndarray,
+    u_pressure: Union[float, np.ndarray],
+) -> Dict[str, float]:
+    """
+    Calculate pulse parameters (pc, pr, ppsi) and their uncertainties.
+
+    Based on Weber & Wilkens (2023) analytical method.
+
+    Args:
+        time: Time array.
+        pressure: Pressure array (deconvolved).
+        u_pressure: Uncertainty - scalar, 1D vector, or 2D covariance matrix.
+
+    Returns:
+        Dict with pc_value, pc_uncertainty, pc_index, pc_time,
+                   pr_value, pr_uncertainty, pr_index, pr_time,
+                   ppsi_value, ppsi_uncertainty.
+    """
+    n = len(pressure)
+
+    # Build covariance matrix U_p
+    u_arr = np.asarray(u_pressure, dtype=float)
+    if u_arr.ndim == 0:
+        # scalar -> diagonal covariance matrix
+        U_p = np.diag(np.full(n, u_arr**2))
+    elif u_arr.ndim == 1:
+        # vector -> diagonal covariance matrix
+        U_p = np.diag(u_arr**2)
+    else:
+        # 2D covariance matrix
+        U_p = u_arr
+
+    dt = (time[-1] - time[0]) / (n - 1)
+
+    # pc: compressional peak pressure
+    pc_index = int(np.argmax(pressure))
+    pc_value = float(pressure[pc_index])
+    pc_uncertainty = float(np.sqrt(U_p[pc_index, pc_index]))
+    pc_time = float(time[pc_index])
+
+    # pr: rarefactional peak pressure (positive value)
+    pr_index = int(np.argmin(pressure))
+    pr_value = float(-pressure[pr_index])
+    pr_uncertainty = float(np.sqrt(U_p[pr_index, pr_index]))
+    pr_time = float(time[pr_index])
+
+    # ppsi: pulse pressure-squared integral
+    ppsi_value = float(np.sum(pressure**2) * dt)
+    # Sensitivity vector: C = 2 * |p| * dt
+    C = 2.0 * np.abs(pressure) * dt
+    ppsi_uncertainty = float(np.sqrt(C @ U_p @ C))
+
+    return {
+        "pc_value": pc_value,
+        "pc_uncertainty": pc_uncertainty,
+        "pc_index": pc_index,
+        "pc_time": pc_time,
+        "pr_value": pr_value,
+        "pr_uncertainty": pr_uncertainty,
+        "pr_index": pr_index,
+        "pr_time": pr_time,
+        "ppsi_value": ppsi_value,
+        "ppsi_uncertainty": ppsi_uncertainty,
+    }

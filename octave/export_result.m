@@ -22,3 +22,16 @@ if ~exist(results_dir, 'dir')
 end
 dlmwrite(fullfile(results_dir, 'octave_result.csv'), result', '%.18e');
 fprintf('Octave result exported: %d samples\n', length(result));
+
+% Pulse parameters
+signal_uncertainty = load('../test-data/signal_uncertainty.csv')';
+n = length(result);
+sampling_rate = 1e7;
+time = (0:n-1) / sampling_rate;
+pp = deconvolution.pulse_parameters(time, result', signal_uncertainty);
+fid = fopen(fullfile(results_dir, 'octave_pulse_params.csv'), 'w');
+fprintf(fid, '%.18e,%.18e,%.18e,%.18e,%.18e,%.18e\n', ...
+    pp.pc_value, pp.pc_uncertainty, pp.pr_value, pp.pr_uncertainty, ...
+    pp.ppsi_value, pp.ppsi_uncertainty);
+fclose(fid);
+fprintf('Octave pulse parameters exported\n');

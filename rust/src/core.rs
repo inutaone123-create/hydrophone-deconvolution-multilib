@@ -85,3 +85,95 @@ pub fn deconvolve_with_uncertainty(
 
     (mean, std)
 }
+
+#[derive(Debug, Clone)]
+pub struct PulseParameters {
+    pub pc_value: f64,
+    pub pc_uncertainty: f64,
+    pub pc_index: usize,
+    pub pc_time: f64,
+    pub pr_value: f64,
+    pub pr_uncertainty: f64,
+    pub pr_index: usize,
+    pub pr_time: f64,
+    pub ppsi_value: f64,
+    pub ppsi_uncertainty: f64,
+}
+
+pub fn pulse_parameters(
+    time: &[f64],
+    pressure: &[f64],
+    u_pressure: PulseUncertainty,
+) -> PulseParameters {
+    let n = pressure.len();
+
+    // Build covariance matrix (stored as flat n×n)
+    let u_p: Vec<f64> = match u_pressure {
+        PulseUncertainty::Scalar(u) => {
+            let mut m = vec![0.0; n * n];
+            let u_sq = u * u;
+            for i in 0..n {
+                m[i * n + i] = u_sq;
+            }
+            m
+        }
+        PulseUncertainty::Vector(ref v) => {
+            let mut m = vec![0.0; n * n];
+            for i in 0..n {
+                m[i * n + i] = v[i] * v[i];
+            }
+            m
+        }
+        PulseUncertainty::Matrix(ref m) => m.clone(),
+    };
+
+    let dt = (time[n - 1] - time[0]) / (n - 1) as f64;
+
+    // pc: compressional peak
+    let mut pc_index = 0usize;
+    let mut pc_value = pressure[0];
+    for i in 1..n {
+        if pressure[i] > pc_value {
+            pc_value = pressure[i];
+            pc_index = i;
+        }
+    }
+    let pc_uncertainty = u_p[pc_index * n + pc_index].sqrt();
+    let pc_time = time[pc_index];
+
+    // pr: rarefactional peak
+    let mut pr_index = 0usize;
+    let mut pr_min = pressure[0];
+    for i in 1..n {
+        if pressure[i] < pr_min {
+            pr_min = pressure[i];
+            pr_index = i;
+        }
+    }
+    let pr_value = -pr_min;
+    let pr_uncertainty = u_p[pr_index * n + pr_index].sqrt();
+    let pr_time = time[pr_index];
+
+    // ppsi
+    let ppsi_value: f64 = pressure.iter().map(|p| p * p).sum::<f64>() * dt;
+    let c: Vec<f64> = pressure.iter().map(|p| 2.0 * p.abs() * dt).collect();
+    let mut ppsi_var = 0.0;
+    for i in 0..n {
+        for j in 0..n {
+            ppsi_var += c[i] * u_p[i * n + j] * c[j];
+        }
+    }
+    let ppsi_uncertainty = ppsi_var.sqrt();
+
+    PulseParameters {
+        pc_value, pc_uncertainty, pc_index, pc_time,
+        pr_value, pr_uncertainty, pr_index, pr_time,
+        ppsi_value, ppsi_uncertainty,
+    }
+}
+
+pub enum PulseUncertainty {
+    Scalar(f64),
+    Vector(Vec<f64>),
+    Matrix(Vec<f64>),
+}

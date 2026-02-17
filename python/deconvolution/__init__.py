@@ -10,6 +10,6 @@ License: CC BY 4.0
 https://creativecommons.org/licenses/by/4.0/
 """
 
-from .core import deconvolve_without_uncertainty, deconvolve_with_uncertainty
+from .core import deconvolve_without_uncertainty, deconvolve_with_uncertainty, pulse_parameters
 
 __version__ = "0.1.0"

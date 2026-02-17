@@ -60,10 +60,60 @@ def main():
                 print("  FAIL\n")
 
     print("=" * 60)
-    print(f"SUMMARY: {passed}/{total} comparisons passed")
+    print(f"DECONVOLUTION SUMMARY: {passed}/{total} comparisons passed")
     print("=" * 60)
 
-    return 0 if passed == total else 1
+    # Pulse parameters cross-validation
+    print("\n" + "=" * 60)
+    print("PULSE PARAMETERS CROSS-VALIDATION")
+    print("=" * 60 + "\n")
+
+    pulse_results = {}
+    for lang in languages:
+        filepath = results_dir / f"{lang}_pulse_params.csv"
+        if filepath.exists():
+            vals = np.loadtxt(filepath, delimiter=",")
+            pulse_results[lang] = vals
+            print(f"  Loaded {lang} pulse params: pc={vals[0]:.6e}, pr={vals[2]:.6e}, ppsi={vals[4]:.6e}")
+        else:
+            print(f"  Missing {lang} pulse params")
+
+    pp_passed = 0
+    pp_total = 0
+    param_names = ["pc_value", "pc_uncertainty", "pr_value", "pr_uncertainty",
+                   "ppsi_value", "ppsi_uncertainty"]
+
+    for i, lang1 in enumerate(languages):
+        if lang1 not in pulse_results:
+            continue
+        for lang2 in languages[i + 1:]:
+            if lang2 not in pulse_results:
+                continue
+
+            pp_total += 1
+            v1 = pulse_results[lang1]
+            v2 = pulse_results[lang2]
+
+            max_rel = 0.0
+            for k in range(6):
+                ref = max(abs(v1[k]), abs(v2[k]))
+                if ref > 0:
+                    rel = abs(v1[k] - v2[k]) / ref
+                    max_rel = max(max_rel, rel)
+
+            print(f"{lang1.upper()} vs {lang2.upper()}: max rel diff = {max_rel:.2e}", end="")
+            if max_rel < 1e-14:
+                pp_passed += 1
+                print("  PASS")
+            else:
+                print("  FAIL")
+
+    print("\n" + "=" * 60)
+    print(f"PULSE PARAMS SUMMARY: {pp_passed}/{pp_total} comparisons passed")
+    print("=" * 60)
+
+    all_passed = (passed == total) and (pp_passed == pp_total)
+    return 0 if all_passed else 1
 
 
 if __name__ == "__main__":

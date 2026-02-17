@@ -25,6 +25,51 @@ Eigen::VectorXd deconvolve_without_uncertainty(
     double sampling_rate
 );
 
+struct DeconvolutionResult {
+    Eigen::VectorXd mean;
+    Eigen::VectorXd std;
+};
+
+DeconvolutionResult deconvolve_with_uncertainty(
+    const Eigen::VectorXd& measured_signal,
+    const Eigen::VectorXd& signal_uncertainty,
+    const Eigen::VectorXcd& frequency_response,
+    const Eigen::VectorXd& response_uncertainty,
+    double sampling_rate,
+    int num_monte_carlo = 1000
+);
+
+struct PulseParameters {
+    double pc_value;
+    double pc_uncertainty;
+    int pc_index;
+    double pc_time;
+    double pr_value;
+    double pr_uncertainty;
+    int pr_index;
+    double pr_time;
+    double ppsi_value;
+    double ppsi_uncertainty;
+};
+
+PulseParameters pulse_parameters(
+    const Eigen::VectorXd& time,
+    const Eigen::VectorXd& pressure,
+    const Eigen::MatrixXd& U_p
+);
+
+PulseParameters pulse_parameters(
+    const Eigen::VectorXd& time,
+    const Eigen::VectorXd& pressure,
+    double u_scalar
+);
+
+PulseParameters pulse_parameters(
+    const Eigen::VectorXd& time,
+    const Eigen::VectorXd& pressure,
+    const Eigen::VectorXd& u_vector
+);
+
 } // namespace hydrophone
 
 #endif

@@ -35,3 +35,20 @@ foreach (var val in result)
     writer.WriteLine(val.ToString("E18", CultureInfo.InvariantCulture));
 
 Console.WriteLine($"C# result exported: {result.Length} samples");
+
+// Pulse parameters
+var sigUnc = LoadCsv(Path.Combine(dataDir, "signal_uncertainty.csv"));
+int n = result.Length;
+double samplingRate = 1e7;
+var timeArr = new double[n];
+for (int i = 0; i < n; i++) timeArr[i] = i / samplingRate;
+
+var pp = Deconvolution.PulseParameters(timeArr, result, sigUnc);
+
+using var ppWriter = new StreamWriter(Path.Combine(resultsDir, "csharp_pulse_params.csv"));
+ppWriter.WriteLine(string.Format(CultureInfo.InvariantCulture,
+    "{0:E18},{1:E18},{2:E18},{3:E18},{4:E18},{5:E18}",
+    pp.PcValue, pp.PcUncertainty, pp.PrValue, pp.PrUncertainty,
+    pp.PpsiValue, pp.PpsiUncertainty));
+
+Console.WriteLine("C# pulse parameters exported");

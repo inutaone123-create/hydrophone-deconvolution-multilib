@@ -50,5 +50,22 @@ int main() {
     }
 
     std::cout << "C++ result exported: " << result.size() << " samples" << std::endl;
+
+    // Pulse parameters
+    auto sig_unc = load_csv(data_dir + "signal_uncertainty.csv");
+    int n = result.size();
+    double sampling_rate = 1e7;
+    Eigen::VectorXd time_vec(n);
+    for (int i = 0; i < n; ++i) time_vec(i) = i / sampling_rate;
+
+    auto pp = hydrophone::pulse_parameters(time_vec, result, sig_unc);
+
+    std::ofstream pp_out(results_dir + "cpp_pulse_params.csv");
+    pp_out << std::setprecision(18) << std::scientific;
+    pp_out << pp.pc_value << "," << pp.pc_uncertainty << ","
+           << pp.pr_value << "," << pp.pr_uncertainty << ","
+           << pp.ppsi_value << "," << pp.ppsi_uncertainty << "\n";
+
+    std::cout << "C++ pulse parameters exported" << std::endl;
     return 0;
 }

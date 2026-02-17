@@ -8,4 +8,4 @@
 //! License: CC BY 4.0
 
 pub mod core;
-pub use crate::core::{deconvolve_without_uncertainty, deconvolve_with_uncertainty};
+pub use crate::core::{deconvolve_without_uncertainty, deconvolve_with_uncertainty, pulse_parameters, PulseParameters, PulseUncertainty};

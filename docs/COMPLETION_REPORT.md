@@ -57,6 +57,52 @@ CSHARP vs RUST:     Relative diff: 1.03e-15  PASS
 SUMMARY: 10/10 comparisons passed
 ```
 
+## Phase 11: パルスパラメータ (pc, pr, ppsi) 実装
+
+### 概要
+Weber & Wilkens チュートリアル準拠のパルスパラメータ計算（pc, pr, ppsi）と解析的不確かさ伝播を全5言語に実装。
+
+### 変更内容
+
+| 内容 | 対象 |
+|------|------|
+| `pulse_parameters` 関数 | Python, Octave, C++, C#, Rust |
+| `deconvolve_with_uncertainty` 追加 | C++, C# (既にPython, Octave, Rustにはあった) |
+| エクスポートスクリプト更新 | 全5言語 (パルスパラメータCSV出力追加) |
+| テストデータ追加 | `test-data/signal_uncertainty.csv` |
+| クロス検証更新 | パルスパラメータの5言語間比較追加 |
+| BDDテスト追加 | `features/pulse_parameters.feature` (3シナリオ) |
+
+### テスト結果
+
+#### BDD テスト
+```
+4 features passed, 0 failed, 0 skipped
+11 scenarios passed, 0 failed, 0 skipped
+52 steps passed, 0 failed, 0 skipped
+```
+
+#### クロス検証: パルスパラメータ
+```
+PYTHON vs OCTAVE:  max rel diff = 1.88e-16  PASS
+PYTHON vs CPP:     max rel diff = 6.06e-16  PASS
+PYTHON vs CSHARP:  max rel diff = 5.60e-16  PASS
+PYTHON vs RUST:    max rel diff = 2.80e-16  PASS
+OCTAVE vs CPP:     max rel diff = 6.06e-16  PASS
+OCTAVE vs CSHARP:  max rel diff = 4.20e-16  PASS
+OCTAVE vs RUST:    max rel diff = 2.02e-16  PASS
+CPP vs CSHARP:     max rel diff = 4.20e-16  PASS
+CPP vs RUST:       max rel diff = 8.08e-16  PASS
+CSHARP vs RUST:    max rel diff = 4.04e-16  PASS
+
+PULSE PARAMS SUMMARY: 10/10 comparisons passed
+```
+
+#### クロス検証: デコンボリューション（退行なし）
+```
+DECONVOLUTION SUMMARY: 10/10 comparisons passed
+```
+
 ### ファイル構成（最終）
 
 ```

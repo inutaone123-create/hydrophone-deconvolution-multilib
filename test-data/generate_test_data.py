@@ -28,10 +28,14 @@ def generate_test_data():
     freq_response_imag = np.random.randn(n) * 0.05
     frequency_response = freq_response_real + 1j * freq_response_imag
 
+    # Signal uncertainty (deterministic, based on measured signal)
+    signal_uncertainty = np.abs(measured_signal) * 0.01 + 1e-6
+
     out_dir = Path(__file__).parent
     np.savetxt(out_dir / "measured_signal.csv", measured_signal, fmt="%.18e")
     np.savetxt(out_dir / "freq_response_real.csv", freq_response_real, fmt="%.18e")
     np.savetxt(out_dir / "freq_response_imag.csv", freq_response_imag, fmt="%.18e")
+    np.savetxt(out_dir / "signal_uncertainty.csv", signal_uncertainty, fmt="%.18e")
 
     print(f"Generated test data: {n} samples, sampling rate {sampling_rate} Hz")
     print(f"Output directory: {out_dir}")
