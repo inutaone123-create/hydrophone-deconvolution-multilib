@@ -75,7 +75,32 @@ def result_filename(meas_type, hyd_name, usebode, filter_type, fc):
     return f"{meas_type}_{hyd_name}{bode_str}_{filter_type}{fc_str}.csv"
 
 
+def run_single(args):
+    """Run single pattern from command line args."""
+    signal_file, noise_file, cal_file, usebode_str, filter_type, fc_str, outpath = args
+    usebode = usebode_str == "true"
+    fc = float(fc_str)
+    result = full_pipeline(signal_file, noise_file, cal_file, usebode, filter_type, fc)
+    with open(outpath, "w") as f:
+        f.write("# time;scaled;deconvolved;regularized;uncertainty(k=1)\n")
+        for i in range(result["n_samples"]):
+            f.write(f"{result['time'][i]:.18E};{result['scaled'][i]:.18E};"
+                    f"{result['deconvolved'][i]:.18E};{result['regularized'][i]:.18E};"
+                    f"{result['uncertainty'][i]:.18E}\n")
+        pp = result["pulse_params"]
+        f.write(f"# pc_value={pp['pc_value']:.18E};pc_uncertainty={pp['pc_uncertainty']:.18E};"
+                f"pc_time={pp['pc_time']:.18E};pr_value={pp['pr_value']:.18E};"
+                f"pr_uncertainty={pp['pr_uncertainty']:.18E};pr_time={pp['pr_time']:.18E};"
+                f"ppsi_value={pp['ppsi_value']:.18E};ppsi_uncertainty={pp['ppsi_uncertainty']:.18E}\n")
+    print(f"OK: {outpath}")
+
+
 def main():
+    # Single pattern mode
+    if len(sys.argv) >= 8:
+        run_single(sys.argv[1:8])
+        return
+
     os.makedirs(OUTPUT_DIR, exist_ok=True)
     total = len(PATTERNS) * len(FILTER_TYPES) * len(BODE_OPTIONS)
     count = 0

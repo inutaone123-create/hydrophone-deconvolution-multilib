@@ -345,24 +345,27 @@ def bode_equation(frequencies: np.ndarray, amplitudes: np.ndarray,
 
     Based on the Kramers-Kronig / Hilbert transform relation between
     log-amplitude and phase for minimum-phase systems.
+    Vectorized implementation for performance.
     """
     df = frequencies[1] - frequencies[0]
     n = np.size(frequencies)
-    phase = np.zeros(n)
-    varphase = np.zeros(n)
+    logamp = np.log(amplitudes)
 
-    for i in range(n):
-        numerator = np.log(amplitudes) - np.log(amplitudes[i])
-        denominator = frequencies**2 - frequencies[i]**2
-        denominator[i] = 1  # avoid division by zero
-        phase[i] = 2.0 * frequencies[i] / np.pi * df * np.sum(numerator / denominator)
+    # Build [n x n] matrix: denom[i,j] = freq[j]^2 - freq[i]^2
+    f2 = frequencies ** 2
+    denom = f2[np.newaxis, :] - f2[:, np.newaxis]  # [n, n]
+    np.fill_diagonal(denom, 1.0)  # avoid division by zero
 
-        denominatoru = amplitudes * denominator
-        numeratoru = np.ones(n)
-        numeratoru[i] = 0
-        varphase[i] = (2.0 * frequencies[i] / np.pi * df)**2 * np.sum(
-            ((numeratoru / denominatoru)**2) * varamplitudes
-        )
+    # Phase: phase[i] = coeff[i] * sum_j (logamp[j] - logamp[i]) / denom[i,j]
+    coeff = 2.0 * frequencies / np.pi * df
+    num = logamp[np.newaxis, :] - logamp[:, np.newaxis]  # [n, n]
+    phase = coeff * np.sum(num / denom, axis=1)
+
+    # Variance: varphase[i] = coeff[i]^2 * sum_{j!=i} (1/(amp[j]*denom[i,j]))^2 * varamp[j]
+    denominatoru = amplitudes[np.newaxis, :] * denom  # [n, n]
+    mask = np.ones((n, n))
+    np.fill_diagonal(mask, 0.0)
+    varphase = coeff ** 2 * np.sum((mask / denominatoru) ** 2 * varamplitudes[np.newaxis, :], axis=1)
 
     return phase, varphase
 

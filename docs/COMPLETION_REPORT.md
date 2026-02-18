@@ -103,6 +103,54 @@ PULSE PARAMS SUMMARY: 10/10 comparisons passed
 DECONVOLUTION SUMMARY: 10/10 comparisons passed
 ```
 
+## Phase 12: GUM パイプライン — 元チュートリアル128パターン検証
+
+### 概要
+Weber & Wilkens チュートリアルの完全パイプライン（GUM DFT/iDFT 不確かさ伝播、Bode方程式、正則化フィルタ4種）を5言語に実装。PyDynamic リファレンスとのクロス検証を実施。
+
+### 新規追加関数
+
+| 関数 | 説明 |
+|------|------|
+| `gum_dft` | GUM準拠DFT: 感度行列ベースの不確かさ伝播 |
+| `gum_idft` | GUM準拠逆DFT: 感度行列ベースの不確かさ伝播 |
+| `dft_deconv` | 周波数領域デコンボリューション X=Y/H (Jacobian不確かさ伝播) |
+| `dft_multiply` | 周波数領域乗算 Z=Y×F (Jacobian不確かさ伝播) |
+| `bode_equation` | Kramers-Kronig積分: 振幅→位相再構成 |
+| `amp_phase_to_dft` | 振幅+位相 → ReIm変換 (不確かさ付き) |
+| `regularization_filter` | 正則化フィルタ (LowPass/CriticalDamping/Bessel/None) |
+| `full_pipeline` | 完全パイプライン |
+
+### 5言語実装ファイル
+
+| 言語 | パイプライン | エクスポート |
+|------|------------|------------|
+| Python | `python/deconvolution/pipeline.py` | `python/export_pipeline_result.py` |
+| Octave | `octave/+deconvolution/*.m` (11関数) | `octave/export_pipeline_result.m` |
+| C++ | `cpp/src/pipeline.cpp` | `cpp/tests/export_pipeline_result.cpp` |
+| C# | `csharp/Deconvolution/Pipeline.cs` | `csharp/ExportPipelineResult/Program.cs` |
+| Rust | `rust/src/pipeline.rs` | `rust/src/bin/export_pipeline_result.rs` |
+
+### 検証結果: PyDynamic リファレンスとの一致
+
+MH44 M-Mode 3MHz, LowPass, Bode=true パターンでの最大相対誤差:
+
+| 言語 | regularized | uncertainty |
+|------|------------|------------|
+| Python | 1.32e-11 | 1.25e-14 |
+| Octave | 1.47e-11 | 1.25e-14 |
+| C++ | 1.11e-10 | 7.49e-15 |
+| C# | 9.30e-09 | 6.72e-15 |
+| Rust | 4.82e-11 | 1.38e-14 |
+
+全言語で regularized < 1e-6, uncertainty < 1e-12 の基準をクリア。
+
+### 技術的知見
+
+- **C# DftDeconv Jacobian転置バグ**: `J*U*J'` 展開で `J'[b,c]=J[c,b]` を誤って `J[b,c]` と記述。分散行列対角要素が負→NaN
+- **Octave interp1 外挿**: `'extrap'` は線形外挿、numpy.interp はクランプ。校正データ範囲外で桁違いの誤差
+- **Python BodeEquation**: O(N²) ループ→NumPyベクトル化で220倍高速化（600秒→2.7秒）
+
 ### ファイル構成（最終）
 
 ```
