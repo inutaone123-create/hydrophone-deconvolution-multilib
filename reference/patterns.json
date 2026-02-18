@@ -1,0 +1,30 @@
+{
+  "patterns": [
+    {"id": 1, "signal": "MeasuredSignals/M-Mode 3 MHz/M3_MH44.DAT", "noise": "MeasuredSignals/M-Mode 3 MHz/M3_MH44r.DAT", "cal": "HydrophoneCalibrationData/MW_MH44ReIm.csv", "hyd": "GAMPTMH44", "type": "M-Mode3MHz", "bode_default": true},
+    {"id": 2, "signal": "MeasuredSignals/M-Mode 3 MHz/M3_MH46.DAT", "noise": "MeasuredSignals/M-Mode 3 MHz/M3_MH46r.DAT", "cal": "HydrophoneCalibrationData/MH46_MWReIm.csv", "hyd": "GAMPTMH46", "type": "M-Mode3MHz", "bode_default": true},
+    {"id": 3, "signal": "MeasuredSignals/M-Mode 3 MHz/M3_ON1704.DAT", "noise": "MeasuredSignals/M-Mode 3 MHz/M3_ON1704r.DAT", "cal": "HydrophoneCalibrationData/MW_ONDA1704_SECReIm.csv", "hyd": "ONDA1704", "type": "M-Mode3MHz", "bode_default": false},
+    {"id": 4, "signal": "MeasuredSignals/M-Mode 3 MHz/M3_PA1434.DAT", "noise": "MeasuredSignals/M-Mode 3 MHz/M3_PA1434r.DAT", "cal": "HydrophoneCalibrationData/MW_PA1434ReIm.csv", "hyd": "PrecisionAcoustics1434", "type": "M-Mode3MHz", "bode_default": true},
+    {"id": 5, "signal": "MeasuredSignals/pD-Mode 3 MHz/pD3_MH44.DAT", "noise": "MeasuredSignals/pD-Mode 3 MHz/pD3_MH44r.DAT", "cal": "HydrophoneCalibrationData/MW_MH44ReIm.csv", "hyd": "GAMPTMH44", "type": "Pulse-Doppler-Mode3MHz", "bode_default": true},
+    {"id": 6, "signal": "MeasuredSignals/pD-Mode 3 MHz/pD3_MH46.DAT", "noise": "MeasuredSignals/pD-Mode 3 MHz/pD3_MH46r.DAT", "cal": "HydrophoneCalibrationData/MH46_MWReIm.csv", "hyd": "GAMPTMH46", "type": "Pulse-Doppler-Mode3MHz", "bode_default": true},
+    {"id": 7, "signal": "MeasuredSignals/pD-Mode 3 MHz/pD3_ON1704.DAT", "noise": "MeasuredSignals/pD-Mode 3 MHz/pD3_ON1704r.DAT", "cal": "HydrophoneCalibrationData/MW_ONDA1704_SECReIm.csv", "hyd": "ONDA1704", "type": "Pulse-Doppler-Mode3MHz", "bode_default": false},
+    {"id": 8, "signal": "MeasuredSignals/pD-Mode 3 MHz/pD3_PA1434.DAT", "noise": "MeasuredSignals/pD-Mode 3 MHz/pD3_PA1434r.DAT", "cal": "HydrophoneCalibrationData/MW_PA1434ReIm.csv", "hyd": "PrecisionAcoustics1434", "type": "Pulse-Doppler-Mode3MHz", "bode_default": true},
+    {"id": 9, "signal": "MeasuredSignals/M-Mode 6 MHz/M6_MH44.DAT", "noise": "MeasuredSignals/M-Mode 6 MHz/M6_MH44r.DAT", "cal": "HydrophoneCalibrationData/MW_MH44ReIm.csv", "hyd": "GAMPTMH44", "type": "M-Mode6MHz", "bode_default": true},
+    {"id": 10, "signal": "MeasuredSignals/M-Mode 6 MHz/M6_MH46.DAT", "noise": "MeasuredSignals/M-Mode 6 MHz/M6_MH46r.DAT", "cal": "HydrophoneCalibrationData/MH46_MWReIm.csv", "hyd": "GAMPTMH46", "type": "M-Mode6MHz", "bode_default": true},
+    {"id": 11, "signal": "MeasuredSignals/M-Mode 6 MHz/M6_ON1704.DAT", "noise": "MeasuredSignals/M-Mode 6 MHz/M6_ON1704r.DAT", "cal": "HydrophoneCalibrationData/MW_ONDA1704_SECReIm.csv", "hyd": "ONDA1704", "type": "M-Mode6MHz", "bode_default": false},
+    {"id": 12, "signal": "MeasuredSignals/M-Mode 6 MHz/M6_PA1434.DAT", "noise": "MeasuredSignals/M-Mode 6 MHz/M6_PA1434r.DAT", "cal": "HydrophoneCalibrationData/MW_PA1434ReIm.csv", "hyd": "PrecisionAcoustics1434", "type": "M-Mode6MHz", "bode_default": true},
+    {"id": 13, "signal": "MeasuredSignals/pD-Mode 7 MHz/pD7_MH44.DAT", "noise": "MeasuredSignals/pD-Mode 7 MHz/pD7_MH44r.DAT", "cal": "HydrophoneCalibrationData/MW_MH44ReIm.csv", "hyd": "GAMPTMH44", "type": "Pulse-Doppler-Mode7MHz", "bode_default": true},
+    {"id": 14, "signal": "MeasuredSignals/pD-Mode 7 MHz/pD7_MH46.DAT", "noise": "MeasuredSignals/pD-Mode 7 MHz/pD7_MH46r.DAT", "cal": "HydrophoneCalibrationData/MH46_MWReIm.csv", "hyd": "GAMPTMH46", "type": "Pulse-Doppler-Mode7MHz", "bode_default": true},
+    {"id": 15, "signal": "MeasuredSignals/pD-Mode 7 MHz/pD7_ON1704.DAT", "noise": "MeasuredSignals/pD-Mode 7 MHz/pD7_ON1704r.DAT", "cal": "HydrophoneCalibrationData/MW_ONDA1704_SECReIm.csv", "hyd": "ONDA1704", "type": "Pulse-Doppler-Mode7MHz", "bode_default": false},
+    {"id": 16, "signal": "MeasuredSignals/pD-Mode 7 MHz/pD7_PA1434.DAT", "noise": "MeasuredSignals/pD-Mode 7 MHz/pD7_PA1434r.DAT", "cal": "HydrophoneCalibrationData/MW_PA1434ReIm.csv", "hyd": "PrecisionAcoustics1434", "type": "Pulse-Doppler-Mode7MHz", "bode_default": true}
+  ],
+  "fc_map": {
+    "M-Mode3MHz": 100e6,
+    "Pulse-Doppler-Mode3MHz": 120e6,
+    "M-Mode6MHz": 150e6,
+    "Pulse-Doppler-Mode7MHz": 200e6
+  },
+  "filter_types": ["LowPass", "CriticalDamping", "Bessel", "None"],
+  "bode_options": [true, false],
+  "fmin": 1e6,
+  "fmax": 60e6
+}

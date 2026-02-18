@@ -19,8 +19,9 @@ build/
 cmake-build-*/
 
 # C#
-bin/
-obj/
+**/bin/
+**/obj/
+!rust/src/bin/
 *.user
 *.suo
 
@@ -43,3 +44,10 @@ Cargo.lock
 test-results/
 validation/results/
 *.log
+
+# Reference data (large files, regenerate with reference/generate_reference.py)
+reference/original-data/
+reference/original-results/
+reference/results/
+reference/__pycache__/
+reference/TutorialFinal.ipynb
