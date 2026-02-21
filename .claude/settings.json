@@ -1,0 +1,16 @@
+{
+  "model": "sonnet",
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Task",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "echo \"[$(date '+%H:%M:%S')] サブエージェント召喚の儀、執り行われ候\" >> /workspace/.claude/agent.log"
+          }
+        ]
+      }
+    ]
+  }
+}
