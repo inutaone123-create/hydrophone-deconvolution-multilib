@@ -1,6 +1,6 @@
 ---
 title: "5言語でハイドロフォンデコンボリューション＋GUM不確かさ伝播を実装して128パターン検証した話"
-tags: ["Python", "Rust", "C++", "CSharp", "信号処理"]
+tags: ["Python", "Rust", "C++", "CSharp", "信号処理", "DevContainer", "ClaudeCode"]
 ---
 
 # 5言語でハイドロフォンデコンボリューション＋GUM不確かさ伝播を実装して128パターン検証した話
@@ -10,6 +10,10 @@ tags: ["Python", "Rust", "C++", "CSharp", "信号処理"]
 水中音響計測で使用されるハイドロフォン（水中マイク）の測定データから、真の音圧信号を復元するためのデコンボリューション処理を、Python・Octave・C++・C#・Rustの5言語で実装し、言語間の数値的一貫性を検証しました。
 
 本プロジェクトは、Weber & Wilkens (2023) のチュートリアル[^1]をベースに、多言語展開とクロス検証を行ったものです。単純なデコンボリューションだけでなく、GUM（計測の不確かさのガイド）準拠の不確かさ伝播を含む完全パイプラインを5言語で再実装し、元チュートリアルの128パターン全てで一致を検証しました。
+
+本実装はClaude Code（Anthropic社のAIコーディングエージェント）を活用し、Dev Container環境での自律実行で開発しました。ソースコードはGitHubで公開しています。
+
+https://github.com/inutaone123-create/hydrophone-deconvolution-multilib
 
 ## デコンボリューションとは
 
@@ -156,6 +160,48 @@ O(N²) の純Python forループでN=1251の場合に600秒以上。NumPy broadc
 
 VSCode Dev Containersを使用して、全言語のビルド環境を一つのコンテナにパッケージ化しました。`F1 → "Reopen in Container"` だけで開発環境が立ち上がります。
 
+Dockerfileには以下をすべて含んでいます：
+
+| ツール | 用途 |
+|--------|------|
+| Python 3 + pytest / behave / numpy / scipy | 実装・テスト・BDD |
+| Octave + signal package | Octave実装 |
+| g++ + cmake + Eigen | C++実装 |
+| .NET SDK 8.0 | C#実装 |
+| Rust (cargo) | Rust実装 |
+| Claude Code (npm) | AIエージェント実行 |
+
+これにより、ホスト環境を汚さずに全言語のビルド・テスト・クロス検証が一つの環境で完結します。
+
+## Claude Code × 自律開発
+
+本プロジェクトはClaude Codeエージェントに `AGENT_MASTER_PLAN.md`（Phase 0〜10の作戦書）を渡して自律実行させる形で開発しました。
+
+```
+AGENT_MASTER_PLAN.md を読んで、Phase 0 から順番に実行してください。
+CLAUDE.md のルールに従って作業してください。
+```
+
+このプロンプト一つで、ファイル構成の設計から5言語の実装・テスト・クロス検証・ドキュメント作成まで一気通貫で実行されました。
+
+### タスク別モデル使い分け
+
+Claude Codeのサブエージェント機能を使い、作業の重さに応じてモデルを自動で切り替えています：
+
+| エージェント | モデル | 担当 |
+|-------------|--------|------|
+| explorer | Haiku | ファイル検索・構造確認 |
+| implementer | Sonnet | 通常の実装・テスト修正 |
+| architect | Opus | 設計・計画・技術的意思決定 |
+
+各エージェントは `.claude/agents/` のMarkdownファイルで定義されており、出陣時に名乗りを上げます（戦国武将風）：
+
+```
+🔍 某、explorer（Haiku）にてございます。いざ、探索の儀、開始つかまつる！
+⚙️ 某、implementer（Sonnet）にてございます。実装の儀、取り掛かり申す！
+🏛️ 某、architect（Opus）にてございます。設計の儀、熟慮いたす所存にございます。
+```
+
 ## BDD/スペック駆動開発
 
 Gherkin形式のFeatureファイルでテスト仕様を定義し、behaveで自動テストを実行します：
@@ -177,6 +223,11 @@ Feature: GUM Pipeline Validation
 - GUMパイプラインでは PyDynamic リファレンスとの相対誤差 5e-6以下
 - FFT正規化規約の統一とJacobian不確かさ伝播の正確な実装が言語間一貫性の鍵
 - Dev Container + BDDで再現可能な開発環境を構築
+- Claude Codeによる自律開発で設計〜実装〜検証を効率化
+
+ソースコード・Dev Container設定・AGENT_MASTER_PLANはGitHubで公開しています：
+
+https://github.com/inutaone123-create/hydrophone-deconvolution-multilib
 
 ## 参考文献
 
