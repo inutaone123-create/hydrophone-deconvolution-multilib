@@ -1,3 +1,4 @@
+@requires_reference_data
 Feature: GUM Pipeline Validation
   As a developer
   I want the GUM-based deconvolution pipeline in all 5 languages

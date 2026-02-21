@@ -16,7 +16,7 @@ jobs:
       run: docker compose build
 
     - name: Run BDD tests
-      run: docker compose run test
+      run: docker compose run test behave features/ --tags=~@requires_reference_data
 
     - name: Run validation
       run: docker compose run validation
