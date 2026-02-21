@@ -43,6 +43,8 @@ Cargo.lock
 # Test outputs
 test-results/
 validation/results/
+validation/pipeline-results/
+validation/bdd-results/
 *.log
 
 # Reference data (large files, regenerate with reference/generate_reference.py)
