@@ -145,6 +145,37 @@ MH44 M-Mode 3MHz, LowPass, Bode=true パターンでの最大相対誤差:
 
 全言語で regularized < 1e-6, uncertainty < 1e-12 の基準をクリア。
 
+### M-Mode全パターン クロス検証（320テスト）
+
+M-Mode 8パターン × 4フィルタ × 2 Bodeオプション × 5言語 = 320テスト
+
+```
+Results: 320/320 PASS (threshold: 5e-6)
+
+Per-language max relative errors:
+  python  : reg=3.23e-10  unc=4.59e-14
+  octave  : reg=3.44e-10  unc=4.56e-14
+  cpp     : reg=1.70e-09  unc=4.73e-14
+  csharp  : reg=2.02e-07  unc=5.33e-14
+  rust    : reg=1.28e-09  unc=4.73e-14
+```
+
+### BDD テスト（パイプライン検証）
+
+```
+1 feature passed, 0 failed, 0 skipped
+6 scenarios passed, 0 failed, 0 skipped
+24 steps passed, 0 failed, 0 skipped
+```
+
+### BDD テスト（全体）
+
+```
+5 features passed, 0 failed, 0 skipped
+17 scenarios passed, 0 failed, 0 skipped
+76 steps passed, 0 failed, 0 skipped
+```
+
 ### 技術的知見
 
 - **C# DftDeconv Jacobian転置バグ**: `J*U*J'` 展開で `J'[b,c]=J[c,b]` を誤って `J[b,c]` と記述。分散行列対角要素が負→NaN

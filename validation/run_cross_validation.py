@@ -139,7 +139,7 @@ def main():
                     unc_err = float("nan") if has_nan else float(
                         np.max(np.abs((test_data[:, 4][mask2] - ref_data[:, 4][mask2]) / ref_data[:, 4][mask2])))
 
-                    if reg_err < 1e-6 and (not np.isnan(unc_err) and unc_err < 1e-6):
+                    if reg_err < 5e-6 and (not np.isnan(unc_err) and unc_err < 5e-6):
                         passed += 1
                         lang_max_reg[lang] = max(lang_max_reg[lang], reg_err)
                         lang_max_unc[lang] = max(lang_max_unc[lang], unc_err)

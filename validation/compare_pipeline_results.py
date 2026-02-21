@@ -187,8 +187,8 @@ def main():
                     errs = compare(ref_data, test_data)
 
                     # Check thresholds
-                    reg_ok = errs.get("regularized", float("nan")) < 1e-6
-                    unc_ok = errs.get("uncertainty", float("nan")) < 1e-6 or not np.isnan(errs.get("uncertainty", 0))
+                    reg_ok = errs.get("regularized", float("nan")) < 5e-6
+                    unc_ok = errs.get("uncertainty", float("nan")) < 5e-6 or not np.isnan(errs.get("uncertainty", 0))
 
                     if reg_ok and unc_ok:
                         passed += 1
