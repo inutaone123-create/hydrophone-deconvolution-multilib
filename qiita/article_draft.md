@@ -229,10 +229,10 @@ Feature: GUM Pipeline Validation
 
 https://github.com/inutaone123-create/hydrophone-deconvolution-multilib
 
-## 参考文献
-
-[^1]: Weber, M., & Wilkens, V. (2023). Tutorial-Deconvolution (v1.4.1). Zenodo. https://doi.org/10.5281/zenodo.10079801
-
 ## ライセンス
 
 本プロジェクトはCC BY 4.0ライセンスの下で公開されています。
+
+## 参考文献
+
+[^1]: Weber, M., & Wilkens, V. (2023). Tutorial-Deconvolution (v1.4.1). Zenodo. https://doi.org/10.5281/zenodo.10079801
