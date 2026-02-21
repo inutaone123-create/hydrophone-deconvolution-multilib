@@ -1,6 +1,6 @@
 ---
 title: "5言語でハイドロフォンデコンボリューション＋GUM不確かさ伝播を実装して128パターン検証した話"
-tags: ["Python", "Rust", "C++", "CSharp", "信号処理", "DevContainer", "ClaudeCode"]
+tags: ["Python", "Rust", "信号処理", "DevContainer", "ClaudeCode"]
 ---
 
 # 5言語でハイドロフォンデコンボリューション＋GUM不確かさ伝播を実装して128パターン検証した話
